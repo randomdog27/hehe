@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thiệp 8/3 ❤️</title>
+<title>Thiệp 8/3</title>
 
 <style>
 body{
@@ -12,167 +12,216 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+    background:linear-gradient(#ffd6e0,#fff0f5);
+    font-family:'Segoe UI', sans-serif;
     overflow:hidden;
-    font-family:Arial, sans-serif;
+}
+
+/* Nút nhạc */
+.music-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#ff4d6d;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:20px;
+    cursor:pointer;
+    z-index:1000;
 }
 
 /* Hoa rơi */
 .flower{
-    position:fixed;
-    top:-30px;
+    position:absolute;
+    top:-50px;
     font-size:20px;
-    animation:fall linear forwards;
+    animation:fall linear infinite;
 }
 @keyframes fall{
-    to{
-        transform:translateY(110vh);
-        opacity:0;
-    }
+    to{ transform:translateY(110vh) rotate(360deg); }
 }
 
-/* Card container */
-.scene{
-    width:320px;
-    height:420px;
-    perspective:1200px;
-}
-
+/* Card */
 .card{
+    width:360px;
+    height:480px;
+    perspective:1500px;
+    cursor:pointer;
+}
+
+.card-inner{
     width:100%;
     height:100%;
     position:relative;
     transform-style:preserve-3d;
-    transition:transform 1s;
-    cursor:pointer;
+    transition:transform 1s ease;
 }
 
-/* Each page */
+/* Page */
 .page{
     position:absolute;
     width:100%;
     height:100%;
-    backface-visibility:hidden;
     border-radius:15px;
-    overflow:hidden;
-    box-shadow:0 10px 25px rgba(0,0,0,0.3);
-    background:white;
+    backface-visibility:hidden;
+    box-shadow:0 15px 35px rgba(0,0,0,0.3);
     display:flex;
     justify-content:center;
     align-items:center;
     text-align:center;
     padding:20px;
+    box-sizing:border-box;
+    background:white;
 }
 
 .page img{
     width:100%;
     height:100%;
     object-fit:cover;
+    border-radius:15px;
 }
 
-/* Music button */
-.music-btn{
-    position:fixed;
-    top:20px;
-    right:20px;
-    background:white;
-    border:none;
-    padding:10px 15px;
-    border-radius:20px;
-    cursor:pointer;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+/* Trang đầu */
+.front{
+    background:#ff4d6d;
+    color:white;
+    font-size:28px;
+    font-weight:bold;
+}
+
+/* Tim */
+.heart{
+    position:absolute;
+    font-size:20px;
+    animation:fly 2s ease forwards;
+}
+@keyframes fly{
+    0%{opacity:1; transform:translateY(0);}
+    100%{opacity:0; transform:translateY(-150px);}
 }
 </style>
 </head>
+
 <body>
 
-<button class="music-btn" onclick="toggleMusic()">🔊 Nhạc</button>
+<button class="music-btn" id="musicBtn">🔈 Bật nhạc</button>
 
-<div class="scene">
-    <div class="card" id="card">
+<!-- SoundCloud -->
+<iframe id="scplayer"
+width="0"
+height="0"
+allow="autoplay"
+src="https://w.soundcloud.com/player/?url=https://soundcloud.com/devilkjss/i-love-you-and-i-love-you-oh&auto_play=false">
+</iframe>
+
+<div class="card" id="card">
+    <div class="card-inner" id="cardInner">
 
         <!-- Trang 1 -->
-        <div class="page" style="background:#ff4f81;color:white;font-size:26px;font-weight:bold;">
-            Happy 8/3 ❤️<br>Gửi vợ yêu
+        <div class="page front">
+            💖 Happy 8/3 💖
         </div>
 
-        <!-- Trang 2 lời chúc -->
+        <!-- Trang 2 Lời chúc -->
         <div class="page" style="transform:rotateY(180deg);">
-            Chúc em luôn xinh đẹp,<br>
-            hạnh phúc và mãi là<br>
-            điều tuyệt vời nhất ❤️
+            <div>
+                <h2>Gửi vợ yêu ❤️</h2>
+                <p>
+                    Cảm ơn em đã đến bên anh.<br>
+                    Chúc em luôn xinh đẹp, hạnh phúc<br>
+                    và mãi là điều tuyệt vời nhất.
+                </p>
+            </div>
         </div>
 
         <!-- Ảnh 1 -->
         <div class="page" style="transform:rotateY(360deg);">
-            <img src="https://drive.google.com/uc?export=view&id=1_XXtKMewZQHzCN_NfCSofeFMvRjNHE6_">
+            <img src="https://i.postimg.cc/L6dkBNzg/581525414-3391866831002648-3688185636082323601-n.jpg">
         </div>
 
         <!-- Ảnh 2 -->
         <div class="page" style="transform:rotateY(540deg);">
-            <img src="https://drive.google.com/uc?export=view&id=1_0ZbrgSCEzrLKTxshwMMUbVAbN8CZ05e">
+            <img src="https://i.postimg.cc/BnnjxKw8/635053860-3484693058386691-471675667280817212-n.jpg">
         </div>
 
         <!-- Ảnh 3 -->
         <div class="page" style="transform:rotateY(720deg);">
-            <img src="https://drive.google.com/uc?export=view&id=1YTLY5V1p9EBpOg8n1QyZgdzN2HoTOZoI">
+            <img src="https://i.postimg.cc/MKFSFfpj/487239541-3158001267722540-7132280241913101348-n.jpg">
         </div>
 
         <!-- Ảnh 4 -->
         <div class="page" style="transform:rotateY(900deg);">
-            <img src="https://drive.google.com/uc?export=view&id=1jprDCY4tdCD48PwkK0KIrCnoa16P7uW4">
+            <img src="https://i.postimg.cc/s2FRVFSx/483369784-3140950486094285-3482349950171698119-n.jpg">
         </div>
 
         <!-- Ảnh 5 -->
         <div class="page" style="transform:rotateY(1080deg);">
-            <img src="https://drive.google.com/uc?export=view&id=1-WtW5Th5UYL1-Lp4olT25z6xpCeArIwT">
+            <img src="https://i.postimg.cc/7YVCGVXJ/480696746-9180083322079925-8287031213964073189-n.jpg">
         </div>
 
     </div>
 </div>
 
-<!-- SoundCloud -->
-<iframe id="player"
-width="0"
-height="0"
-allow="autoplay"
-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/devilkjss/i-love-you-and-i-love-you-oh">
-</iframe>
+<script src="https://w.soundcloud.com/player/api.js"></script>
 
 <script>
-let currentRotation = 0;
-const card = document.getElementById("card");
-
-card.addEventListener("click", ()=>{
-    currentRotation -= 180;
-    card.style.transform = "rotateY("+currentRotation+"deg)";
-});
 
 /* Hoa rơi */
 function createFlower(){
-    const f=document.createElement("div");
-    f.className="flower";
-    f.innerHTML="🌸";
-    f.style.left=Math.random()*100+"vw";
-    f.style.animationDuration=4+Math.random()*6+"s";
-    document.body.appendChild(f);
-    setTimeout(()=>f.remove(),10000);
+    const flower=document.createElement("div");
+    flower.classList.add("flower");
+    flower.innerHTML="🌸";
+    flower.style.left=Math.random()*100+"vw";
+    flower.style.animationDuration=(5+Math.random()*4)+"s";
+    flower.style.fontSize=(15+Math.random()*20)+"px";
+    document.body.appendChild(flower);
+    setTimeout(()=>flower.remove(),11000);
 }
-setInterval(createFlower,500);
+setInterval(createFlower,300);
 
-/* Nhạc */
-let playing=false;
-const player=document.getElementById("player");
+/* SoundCloud */
+const iframe=document.getElementById("scplayer");
+const widget=SC.Widget(iframe);
+let musicPlaying=false;
+const musicBtn=document.getElementById("musicBtn");
 
-function toggleMusic(){
-    if(!playing){
-        player.src+="&auto_play=true";
-        playing=true;
+musicBtn.addEventListener("click", ()=>{
+    if(musicPlaying){
+        widget.pause();
+        musicPlaying=false;
+        musicBtn.innerText="🔈 Bật nhạc";
     }else{
-        player.src=player.src.replace("&auto_play=true","");
-        playing=false;
+        widget.play();
+        musicPlaying=true;
+        musicBtn.innerText="🔊 Tắt nhạc";
     }
-}
+});
+
+/* Xoay thiệp */
+const cardInner=document.getElementById("cardInner");
+let angle=0;
+
+document.getElementById("card").addEventListener("click", ()=>{
+    angle+=180;
+    cardInner.style.transform=`rotateY(${angle}deg)`;
+
+    if(!musicPlaying){
+        widget.play();
+        musicPlaying=true;
+        musicBtn.innerText="🔊 Tắt nhạc";
+    }
+
+    for(let i=0;i<6;i++){
+        const heart=document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML="💗";
+        heart.style.left=(40+Math.random()*20)+"%";
+        heart.style.top="55%";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),2000);
+    }
+});
 </script>
 
 </body>
