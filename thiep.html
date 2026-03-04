@@ -17,7 +17,7 @@ body{
     overflow:hidden;
 }
 
-/* ================= HOA RƠI ================= */
+/* ================= Hoa rơi ================= */
 .flower{
     position:absolute;
     top:-50px;
@@ -31,13 +31,13 @@ body{
     }
 }
 
-/* ================= THIỆP 3D ================= */
+/* ================= Thiệp ================= */
+
 .card{
-    width:360px;
-    height:250px;
-    perspective:1500px;
+    width:340px;
+    height:240px;
     position:relative;
-    cursor:pointer;
+    perspective:1500px;
     z-index:10;
 }
 
@@ -48,17 +48,11 @@ body{
     transform-style:preserve-3d;
 }
 
-.card-front,
-.card-back{
+/* Bìa */
+.card-front{
     position:absolute;
     width:100%;
     height:100%;
-    border-radius:15px;
-    backface-visibility:hidden;
-}
-
-/* Mặt trước */
-.card-front{
     background:#ff4d6d;
     color:white;
     display:flex;
@@ -66,45 +60,63 @@ body{
     align-items:center;
     font-size:26px;
     font-weight:bold;
+    border-radius:15px;
     transform-origin:left;
-    transition:transform 1.2s ease;
+    transition:transform 1.3s ease;
+    backface-visibility:hidden;
     box-shadow:0 15px 35px rgba(0,0,0,0.3);
 }
 
-/* Mặt trong */
-.card-back{
+/* Mặt sau bìa (che chữ hoàn toàn) */
+.card-front::after{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#ff4d6d;
+    border-radius:15px;
+    transform:rotateY(180deg);
+    backface-visibility:hidden;
+}
+
+/* Nội dung bên trong */
+.card-inside{
+    position:absolute;
+    width:100%;
+    height:100%;
     background:white;
+    border-radius:15px;
     padding:25px;
     box-sizing:border-box;
-    transform:rotateY(180deg);
+    text-align:center;
     display:flex;
     justify-content:center;
     align-items:center;
-    text-align:center;
+    transform:translateZ(-1px);
     box-shadow:0 15px 35px rgba(0,0,0,0.2);
 }
 
-/* Khi mở */
-.card.open .card-front{
-    transform:rotateY(-180deg);
+/* Hover mở */
+.card:hover .card-front{
+    transform:rotateY(-170deg);
 }
 
-/* ================= TIM BAY ================= */
+/* Tim bay */
 .heart{
     position:absolute;
-    font-size:22px;
+    font-size:20px;
     animation:fly 2s ease forwards;
 }
 
 @keyframes fly{
-    0%{opacity:1; transform:translateY(0) scale(1);}
-    100%{opacity:0; transform:translateY(-200px) scale(1.5);}
+    0%{opacity:1; transform:translateY(0);}
+    100%{opacity:0; transform:translateY(-150px);}
 }
 </style>
 </head>
 <body>
 
-<!-- YouTube iframe ẩn -->
+<!-- YouTube Player Ẩn -->
 <iframe id="ytplayer"
     width="0"
     height="0"
@@ -115,12 +127,11 @@ body{
 
 <div class="card" id="card">
     <div class="card-inner">
-
         <div class="card-front">
             💖 Happy 8/3 💖
         </div>
 
-        <div class="card-back">
+        <div class="card-inside">
             <div>
                 <h3>Gửi vợ yêu ❤️</h3>
                 <p>
@@ -130,13 +141,12 @@ body{
                 </p>
             </div>
         </div>
-
     </div>
 </div>
 
 <script>
 
-/* ================= HOA RƠI ================= */
+/* ================= Hoa rơi ================= */
 function createFlower(){
     const flower = document.createElement("div");
     flower.classList.add("flower");
@@ -146,36 +156,39 @@ function createFlower(){
     flower.style.fontSize = (15 + Math.random()*20) + "px";
     document.body.appendChild(flower);
 
-    setTimeout(()=>flower.remove(),11000);
+    setTimeout(()=>{ flower.remove(); },11000);
 }
 setInterval(createFlower,300);
 
-/* ================= CLICK MỞ ================= */
+/* ================= Hover mở + phát nhạc ================= */
 const card = document.getElementById("card");
 const iframe = document.getElementById("ytplayer");
+let musicPlayed = false;
 
-card.addEventListener("click", ()=>{
+card.addEventListener("mouseenter", ()=>{
 
-    card.classList.add("open");
-
-    // phát nhạc bằng postMessage (ổn định hơn API load)
-    iframe.contentWindow.postMessage(
-        '{"event":"command","func":"playVideo","args":""}',
-        '*'
-    );
+    // phát nhạc chỉ 1 lần
+    if(!musicPlayed){
+        iframe.contentWindow.postMessage(
+            '{"event":"command","func":"playVideo","args":""}',
+            '*'
+        );
+        musicPlayed = true;
+    }
 
     // tạo tim bay
-    for(let i=0;i<15;i++){
+    for(let i=0;i<8;i++){
         const heart = document.createElement("div");
         heart.classList.add("heart");
         heart.innerHTML="💗";
         heart.style.left = (40 + Math.random()*20) + "%";
-        heart.style.top = "55%";
+        heart.style.top = "50%";
         document.body.appendChild(heart);
-        setTimeout(()=>heart.remove(),2000);
-    }
 
+        setTimeout(()=>{heart.remove()},2000);
+    }
 });
+
 </script>
 
 </body>
