@@ -17,7 +17,7 @@ body{
     overflow:hidden;
 }
 
-/* ================= Hoa rơi ================= */
+/* Hoa rơi */
 .flower{
     position:absolute;
     top:-50px;
@@ -31,13 +31,13 @@ body{
     }
 }
 
-/* ================= Thiệp ================= */
-
+/* Thiệp */
 .card{
     width:340px;
     height:240px;
-    position:relative;
     perspective:1500px;
+    cursor:pointer;
+    position:relative;
     z-index:10;
 }
 
@@ -48,11 +48,17 @@ body{
     transform-style:preserve-3d;
 }
 
-/* Bìa */
-.card-front{
+.card-front,
+.card-inside{
     position:absolute;
     width:100%;
     height:100%;
+    border-radius:15px;
+    backface-visibility:hidden;
+}
+
+/* Mặt trước */
+.card-front{
     background:#ff4d6d;
     color:white;
     display:flex;
@@ -60,45 +66,27 @@ body{
     align-items:center;
     font-size:26px;
     font-weight:bold;
-    border-radius:15px;
     transform-origin:left;
-    transition:transform 1.3s ease;
-    backface-visibility:hidden;
+    transition:transform 1.2s ease;
     box-shadow:0 15px 35px rgba(0,0,0,0.3);
 }
 
-/* Mặt sau bìa (che chữ hoàn toàn) */
-.card-front::after{
-    content:"";
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:#ff4d6d;
-    border-radius:15px;
-    transform:rotateY(180deg);
-    backface-visibility:hidden;
-}
-
-/* Nội dung bên trong */
+/* Mặt trong */
 .card-inside{
-    position:absolute;
-    width:100%;
-    height:100%;
     background:white;
-    border-radius:15px;
     padding:25px;
     box-sizing:border-box;
     text-align:center;
     display:flex;
     justify-content:center;
     align-items:center;
-    transform:translateZ(-1px);
+    transform:rotateY(180deg);
     box-shadow:0 15px 35px rgba(0,0,0,0.2);
 }
 
-/* Hover mở */
-.card:hover .card-front{
-    transform:rotateY(-170deg);
+/* Khi mở */
+.card.open .card-front{
+    transform:rotateY(-180deg);
 }
 
 /* Tim bay */
@@ -116,11 +104,11 @@ body{
 </head>
 <body>
 
-<!-- YouTube Player Ẩn -->
+<!-- YouTube player ẩn -->
 <iframe id="ytplayer"
     width="0"
     height="0"
-    src="https://www.youtube.com/embed/ubuufa9hpsc?enablejsapi=1"
+    src="https://www.youtube.com/embed/ubuufa9hpsc?autoplay=1&loop=1&playlist=ubuufa9hpsc"
     frameborder="0"
     allow="autoplay"
 ></iframe>
@@ -146,7 +134,7 @@ body{
 
 <script>
 
-/* ================= Hoa rơi ================= */
+/* Hoa rơi */
 function createFlower(){
     const flower = document.createElement("div");
     flower.classList.add("flower");
@@ -156,37 +144,36 @@ function createFlower(){
     flower.style.fontSize = (15 + Math.random()*20) + "px";
     document.body.appendChild(flower);
 
-    setTimeout(()=>{ flower.remove(); },11000);
+    setTimeout(()=>flower.remove(),11000);
 }
 setInterval(createFlower,300);
 
-/* ================= Hover mở + phát nhạc ================= */
 const card = document.getElementById("card");
 const iframe = document.getElementById("ytplayer");
-let musicPlayed = false;
+let opened = false;
 
-card.addEventListener("mouseenter", ()=>{
+card.addEventListener("click", ()=>{
 
-    // phát nhạc chỉ 1 lần
-    if(!musicPlayed){
-        iframe.contentWindow.postMessage(
-            '{"event":"command","func":"playVideo","args":""}',
-            '*'
-        );
-        musicPlayed = true;
-    }
+    if(opened) return;
 
-    // tạo tim bay
-    for(let i=0;i<8;i++){
+    card.classList.add("open");
+
+    // reload iframe để chắc chắn autoplay chạy
+    iframe.src = iframe.src;
+
+    // tim bay
+    for(let i=0;i<10;i++){
         const heart = document.createElement("div");
         heart.classList.add("heart");
         heart.innerHTML="💗";
         heart.style.left = (40 + Math.random()*20) + "%";
-        heart.style.top = "50%";
+        heart.style.top = "55%";
         document.body.appendChild(heart);
 
-        setTimeout(()=>{heart.remove()},2000);
+        setTimeout(()=>heart.remove(),2000);
     }
+
+    opened = true;
 });
 
 </script>
