@@ -17,7 +17,7 @@ body{
     overflow:hidden;
 }
 
-/* ================= Hoa rơi ================= */
+/* ================= HOA RƠI ================= */
 .flower{
     position:absolute;
     top:-50px;
@@ -31,13 +31,13 @@ body{
     }
 }
 
-/* ================= Thiệp ================= */
-
+/* ================= THIỆP ================= */
 .card{
-    width:340px;
-    height:240px;
+    width:360px;
+    height:250px;
     position:relative;
     perspective:1500px;
+    cursor:pointer;
     z-index:10;
 }
 
@@ -48,7 +48,6 @@ body{
     transform-style:preserve-3d;
 }
 
-/* Bìa */
 .card-front{
     position:absolute;
     width:100%;
@@ -67,19 +66,6 @@ body{
     box-shadow:0 15px 35px rgba(0,0,0,0.3);
 }
 
-/* Mặt sau bìa (để che chữ hoàn toàn) */
-.card-front::after{
-    content:"";
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:#ff4d6d;
-    border-radius:15px;
-    transform:rotateY(180deg);
-    backface-visibility:hidden;
-}
-
-/* Nội dung bên trong */
 .card-inside{
     position:absolute;
     width:100%;
@@ -92,33 +78,36 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    transform:translateZ(-1px);
     box-shadow:0 15px 35px rgba(0,0,0,0.2);
 }
 
-/* Hover mở */
-.card:hover .card-front{
+/* Khi mở */
+.card.open .card-front{
     transform:rotateY(-170deg);
 }
 
-/* Tim bay khi mở */
+/* ================= TIM BAY ================= */
 .heart{
     position:absolute;
-    font-size:20px;
+    font-size:22px;
     animation:fly 2s ease forwards;
 }
 
 @keyframes fly{
-    0%{opacity:1; transform:translateY(0);}
-    100%{opacity:0; transform:translateY(-150px);}
+    0%{opacity:1; transform:translateY(0) scale(1);}
+    100%{opacity:0; transform:translateY(-180px) scale(1.5);}
 }
 
 </style>
 </head>
 <body>
 
+<!-- YouTube Player Ẩn -->
+<div id="player" style="display:none;"></div>
+
 <div class="card" id="card">
     <div class="card-inner">
+
         <div class="card-front">
             💖 Happy 8/3 💖
         </div>
@@ -133,12 +122,32 @@ body{
                 </p>
             </div>
         </div>
+
     </div>
 </div>
 
-<script>
+<!-- YouTube API -->
+<script src="https://www.youtube.com/iframe_api"></script>
 
-/* Hoa rơi */
+<script>
+let player;
+
+/* ================= YOUTUBE ================= */
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        videoId: 'ubuufa9hpsc',
+        playerVars: {
+            autoplay: 0,
+            controls: 0,
+            loop: 1,
+            playlist: 'ubuufa9hpsc'
+        }
+    });
+}
+
+/* ================= HOA RƠI ================= */
 function createFlower(){
     const flower = document.createElement("div");
     flower.classList.add("flower");
@@ -152,22 +161,31 @@ function createFlower(){
 }
 setInterval(createFlower,300);
 
-/* Tim bay khi hover */
+/* ================= CLICK MỞ ================= */
 const card = document.getElementById("card");
 
-card.addEventListener("mouseenter", ()=>{
-    for(let i=0;i<8;i++){
+card.addEventListener("click", () => {
+
+    card.classList.add("open");
+
+    // phát nhạc
+    if (player) {
+        player.playVideo();
+    }
+
+    // tạo tim bay
+    for(let i=0;i<15;i++){
         const heart = document.createElement("div");
         heart.classList.add("heart");
         heart.innerHTML="💗";
         heart.style.left = (40 + Math.random()*20) + "%";
-        heart.style.top = "50%";
+        heart.style.top = "55%";
         document.body.appendChild(heart);
 
         setTimeout(()=>{heart.remove()},2000);
     }
-});
 
+});
 </script>
 
 </body>
