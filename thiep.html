@@ -46,26 +46,20 @@ body{
 .card{
     width:360px;
     height:480px;
-    perspective:1500px;
+    position:relative;
+    overflow:hidden;
+    border-radius:15px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.3);
     cursor:pointer;
 }
 
-.card-inner{
-    width:100%;
-    height:100%;
-    position:relative;
-    transform-style:preserve-3d;
-    transition:transform 1s ease;
-}
-
-/* Page */
+/* Pages */
 .page{
     position:absolute;
     width:100%;
     height:100%;
-    border-radius:15px;
-    backface-visibility:hidden;
-    box-shadow:0 15px 35px rgba(0,0,0,0.3);
+    top:0;
+    left:0;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -73,6 +67,15 @@ body{
     padding:20px;
     box-sizing:border-box;
     background:white;
+    transition:transform 0.8s ease, opacity 0.8s ease;
+    opacity:0;
+    transform:scale(0.9);
+}
+
+.page.active{
+    opacity:1;
+    transform:scale(1);
+    z-index:10;
 }
 
 .page img{
@@ -116,51 +119,42 @@ src="https://w.soundcloud.com/player/?url=https://soundcloud.com/devilkjss/i-lov
 </iframe>
 
 <div class="card" id="card">
-    <div class="card-inner" id="cardInner">
 
-        <!-- Trang 1 -->
-        <div class="page front">
-            💖 Happy 8/3 💖
-        </div>
-
-        <!-- Trang 2 Lời chúc -->
-        <div class="page" style="transform:rotateY(180deg);">
-            <div>
-                <h2>Gửi vợ yêu ❤️</h2>
-                <p>
-                    Cảm ơn em đã đến bên anh.<br>
-                    Chúc em luôn xinh đẹp, hạnh phúc<br>
-                    và mãi là điều tuyệt vời nhất.
-                </p>
-            </div>
-        </div>
-
-        <!-- Ảnh 1 -->
-        <div class="page" style="transform:rotateY(360deg);">
-            <img src="https://i.postimg.cc/L6dkBNzg/581525414-3391866831002648-3688185636082323601-n.jpg">
-        </div>
-
-        <!-- Ảnh 2 -->
-        <div class="page" style="transform:rotateY(540deg);">
-            <img src="https://i.postimg.cc/BnnjxKw8/635053860-3484693058386691-471675667280817212-n.jpg">
-        </div>
-
-        <!-- Ảnh 3 -->
-        <div class="page" style="transform:rotateY(720deg);">
-            <img src="https://i.postimg.cc/MKFSFfpj/487239541-3158001267722540-7132280241913101348-n.jpg">
-        </div>
-
-        <!-- Ảnh 4 -->
-        <div class="page" style="transform:rotateY(900deg);">
-            <img src="https://i.postimg.cc/s2FRVFSx/483369784-3140950486094285-3482349950171698119-n.jpg">
-        </div>
-
-        <!-- Ảnh 5 -->
-        <div class="page" style="transform:rotateY(1080deg);">
-            <img src="https://i.postimg.cc/7YVCGVXJ/480696746-9180083322079925-8287031213964073189-n.jpg">
-        </div>
-
+    <div class="page front active">
+        💖 Happy 8/3 💖
     </div>
+
+    <div class="page">
+        <div>
+            <h2>Gửi vợ yêu ❤️</h2>
+            <p>
+                Cảm ơn em đã đến bên anh.<br>
+                Chúc em luôn xinh đẹp, hạnh phúc<br>
+                và mãi là điều tuyệt vời nhất.
+            </p>
+        </div>
+    </div>
+
+    <div class="page">
+        <img src="https://i.postimg.cc/L6dkBNzg/581525414-3391866831002648-3688185636082323601-n.jpg">
+    </div>
+
+    <div class="page">
+        <img src="https://i.postimg.cc/BnnjxKw8/635053860-3484693058386691-471675667280817212-n.jpg">
+    </div>
+
+    <div class="page">
+        <img src="https://i.postimg.cc/MKFSFfpj/487239541-3158001267722540-7132280241913101348-n.jpg">
+    </div>
+
+    <div class="page">
+        <img src="https://i.postimg.cc/s2FRVFSx/483369784-3140950486094285-3482349950171698119-n.jpg">
+    </div>
+
+    <div class="page">
+        <img src="https://i.postimg.cc/7YVCGVXJ/480696746-9180083322079925-8287031213964073189-n.jpg">
+    </div>
+
 </div>
 
 <script src="https://w.soundcloud.com/player/api.js"></script>
@@ -198,13 +192,15 @@ musicBtn.addEventListener("click", ()=>{
     }
 });
 
-/* Xoay thiệp */
-const cardInner=document.getElementById("cardInner");
-let angle=0;
+/* Chuyển trang */
+const pages=document.querySelectorAll(".page");
+let current=0;
 
 document.getElementById("card").addEventListener("click", ()=>{
-    angle+=180;
-    cardInner.style.transform=`rotateY(${angle}deg)`;
+
+    pages[current].classList.remove("active");
+    current=(current+1)%pages.length;
+    pages[current].classList.add("active");
 
     if(!musicPlaying){
         widget.play();
