@@ -3,121 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chúc mừng 8/3</title>
+<title>Thiệp 8/3</title>
 
 <style>
 body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:linear-gradient(135deg,#ffdde1,#ee9ca7);
-  overflow:hidden;
-  font-family: 'Segoe UI', sans-serif;
-  color:white;
-  text-align:center;
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f8e1e7;
+    font-family: 'Segoe UI', sans-serif;
 }
 
+/* Container */
 .card{
-  background:rgba(255,255,255,0.15);
-  padding:40px 60px;
-  border-radius:20px;
-  backdrop-filter: blur(10px);
-  box-shadow:0 20px 40px rgba(0,0,0,0.2);
-  max-width:600px;
-  animation: fadeIn 2s ease forwards;
+    position:relative;
+    width:300px;
+    height:200px;
+    perspective:1000px;
 }
 
-h1{
-  font-size:32px;
-  margin-bottom:20px;
-  opacity:0;
-  animation: fadeUp 1.5s ease forwards 0.5s;
+/* Bìa ngoài */
+.card-front{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#ff4d6d;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:24px;
+    font-weight:bold;
+    border-radius:10px;
+    transform-origin:left;
+    transition:transform 1s ease;
+    backface-visibility:hidden;
 }
 
-p{
-  font-size:18px;
-  line-height:1.6;
-  opacity:0;
-  animation: fadeUp 1.5s ease forwards 1.5s;
+/* Nội dung bên trong */
+.card-inside{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:white;
+    color:#333;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+    border-radius:10px;
 }
 
-.signature{
-  margin-top:30px;
-  font-style:italic;
-  opacity:0;
-  animation: fadeUp 1.5s ease forwards 2.5s;
-}
-
-@keyframes fadeUp{
-  from{
-    opacity:0;
-    transform:translateY(20px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
-}
-
-/* Hoa rơi */
-.flower{
-  position:fixed;
-  top:-20px;
-  font-size:20px;
-  animation: fall linear infinite;
-  opacity:0.8;
-}
-
-@keyframes fall{
-  to{
-    transform:translateY(110vh) rotate(360deg);
-  }
+/* Hover mở thiệp */
+.card:hover .card-front{
+    transform:rotateY(-160deg);
 }
 </style>
+
 </head>
 <body>
 
 <div class="card">
-  <h1>Chúc mừng 8/3 ❤️</h1>
-  <p>
-    Cảm ơn em vì đã luôn bên anh,<br>
-    vì những dịu dàng, thấu hiểu<br>
-    và cả những hy sinh thầm lặng.<br><br>
-    Em không chỉ là vợ,<br>
-    em là bình yên của anh mỗi ngày.
-  </p>
-  <div class="signature">
-    Yêu em nhiều hơn hôm qua,<br>
-    và chắc chắn ít hơn ngày mai.
-  </div>
+    <div class="card-front">
+        💖 Happy 8/3 💖
+    </div>
+    <div class="card-inside">
+        <div>
+            <h3>Gửi vợ yêu ❤️</h3>
+            <p>
+                Cảm ơn em đã đến bên anh.<br>
+                Chúc em luôn xinh đẹp, hạnh phúc<br>
+                và mãi là điều tuyệt vời nhất của anh.
+            </p>
+        </div>
+    </div>
 </div>
-
-<script>
-const flowers = ["🌸","🌷","💮","🌹"];
-
-function createFlower(){
-  const f = document.createElement("div");
-  f.className = "flower";
-  f.textContent = flowers[Math.floor(Math.random()*flowers.length)];
-
-  f.style.left = Math.random()*100 + "vw";
-  f.style.animationDuration = (5 + Math.random()*5) + "s";
-  f.style.fontSize = (16 + Math.random()*20) + "px";
-
-  document.body.appendChild(f);
-
-  setTimeout(()=>f.remove(),10000);
-}
-
-setInterval(createFlower,500);
-</script>
 
 </body>
 </html>
