@@ -17,7 +17,21 @@ body{
     overflow:hidden;
 }
 
-/* HOA RƠI */
+/* Nút nhạc */
+.music-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#ff4d6d;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:20px;
+    cursor:pointer;
+    z-index:1000;
+}
+
+/* Hoa rơi */
 .flower{
     position:absolute;
     top:-50px;
@@ -25,28 +39,23 @@ body{
     animation:fall linear infinite;
 }
 @keyframes fall{
-    to { transform:translateY(110vh) rotate(360deg); }
+    to{ transform:translateY(110vh) rotate(360deg); }
 }
 
-/* THIỆP 3D */
+/* Thiệp */
 .card{
     width:340px;
     height:240px;
-    perspective:1500px;
+    perspective:1200px;
     cursor:pointer;
-    position:relative;
 }
 
 .card-inner{
     width:100%;
     height:100%;
-    transform-style:preserve-3d;
-    transition:transform 1.2s ease;
     position:relative;
-}
-
-.card.open .card-inner{
-    transform:rotateY(-180deg);
+    transform-style:preserve-3d;
+    transition:transform 1s ease;
 }
 
 .card-front,
@@ -58,7 +67,6 @@ body{
     backface-visibility:hidden;
 }
 
-/* MẶT TRƯỚC */
 .card-front{
     background:#ff4d6d;
     color:white;
@@ -70,7 +78,6 @@ body{
     box-shadow:0 15px 35px rgba(0,0,0,0.3);
 }
 
-/* MẶT TRONG */
 .card-back{
     background:white;
     transform:rotateY(180deg);
@@ -83,7 +90,7 @@ body{
     box-shadow:0 15px 35px rgba(0,0,0,0.2);
 }
 
-/* TIM BAY */
+/* Tim */
 .heart{
     position:absolute;
     font-size:20px;
@@ -98,24 +105,21 @@ body{
 
 <body>
 
-<!-- SoundCloud Player Ẩn -->
-<iframe
-    id="scplayer"
+<button class="music-btn" id="musicBtn">🔈 Bật nhạc</button>
+
+<!-- SoundCloud Embed -->
+<iframe id="scplayer"
     width="0"
     height="0"
-    scrolling="no"
-    frameborder="no"
     allow="autoplay"
     src="https://w.soundcloud.com/player/?url=https://soundcloud.com/devilkjss/i-love-you-and-i-love-you-oh&auto_play=false">
 </iframe>
 
 <div class="card" id="card">
-    <div class="card-inner">
-
+    <div class="card-inner" id="cardInner">
         <div class="card-front">
             💖 Happy 8/3 💖
         </div>
-
         <div class="card-back">
             <div>
                 <h3>Gửi vợ yêu ❤️</h3>
@@ -126,52 +130,68 @@ body{
                 </p>
             </div>
         </div>
-
     </div>
 </div>
 
+<script src="https://w.soundcloud.com/player/api.js"></script>
+
 <script>
-// tạo hoa rơi
+
+// Hoa rơi
 function createFlower(){
-    const flower = document.createElement("div");
+    const flower=document.createElement("div");
     flower.classList.add("flower");
-    flower.innerHTML = "🌸";
-    flower.style.left = Math.random()*100+"vw";
-    flower.style.animationDuration = (5 + Math.random()*4) + "s";
-    flower.style.fontSize = (15 + Math.random()*20)+"px";
+    flower.innerHTML="🌸";
+    flower.style.left=Math.random()*100+"vw";
+    flower.style.animationDuration=(5+Math.random()*4)+"s";
+    flower.style.fontSize=(15+Math.random()*20)+"px";
     document.body.appendChild(flower);
     setTimeout(()=>flower.remove(),11000);
 }
-setInterval(createFlower, 300);
+setInterval(createFlower,300);
 
-const card = document.getElementById("card");
-const scplayer = document.getElementById("scplayer");
-let opened = false;
+// SoundCloud API
+const iframe = document.getElementById("scplayer");
+const widget = SC.Widget(iframe);
 
-card.addEventListener("click", ()=>{
-    if(opened) return;
+let musicPlaying = false;
 
-    // mở thiệp 3D
-    card.classList.add("open");
+document.getElementById("musicBtn").addEventListener("click", ()=>{
+    if(musicPlaying){
+        widget.pause();
+        musicPlaying=false;
+        musicBtn.innerText="🔈 Bật nhạc";
+    }else{
+        widget.play();
+        musicPlaying=true;
+        musicBtn.innerText="🔊 Tắt nhạc";
+    }
+});
 
-    // play SoundCloud
-    scplayer.contentWindow.postMessage(
-        '{"method":"play"}',
-        '*'
-    );
+// Thiệp xoay vô hạn
+const cardInner=document.getElementById("cardInner");
+let angle=0;
 
-    // tim bay
-    for(let i=0;i<10;i++){
-        const heart = document.createElement("div");
+document.getElementById("card").addEventListener("click", ()=>{
+
+    angle+=180;
+    cardInner.style.transform=`rotateY(${angle}deg)`;
+
+    if(!musicPlaying){
+        widget.play();
+        musicPlaying=true;
+        musicBtn.innerText="🔊 Tắt nhạc";
+    }
+
+    for(let i=0;i<8;i++){
+        const heart=document.createElement("div");
         heart.classList.add("heart");
         heart.innerHTML="💗";
-        heart.style.left = (40 + Math.random()*20) + "%";
-        heart.style.top = "55%";
+        heart.style.left=(40+Math.random()*20)+"%";
+        heart.style.top="55%";
         document.body.appendChild(heart);
         setTimeout(()=>heart.remove(),2000);
     }
-
-    opened = true;
 });
 </script>
 
