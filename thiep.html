@@ -31,12 +31,12 @@ body{
     }
 }
 
-/* ================= THIỆP ================= */
+/* ================= THIỆP 3D ================= */
 .card{
     width:360px;
     height:250px;
-    position:relative;
     perspective:1500px;
+    position:relative;
     cursor:pointer;
     z-index:10;
 }
@@ -48,10 +48,17 @@ body{
     transform-style:preserve-3d;
 }
 
-.card-front{
+.card-front,
+.card-back{
     position:absolute;
     width:100%;
     height:100%;
+    border-radius:15px;
+    backface-visibility:hidden;
+}
+
+/* Mặt trước */
+.card-front{
     background:#ff4d6d;
     color:white;
     display:flex;
@@ -59,31 +66,27 @@ body{
     align-items:center;
     font-size:26px;
     font-weight:bold;
-    border-radius:15px;
     transform-origin:left;
-    transition:transform 1.3s ease;
-    backface-visibility:hidden;
+    transition:transform 1.2s ease;
     box-shadow:0 15px 35px rgba(0,0,0,0.3);
 }
 
-.card-inside{
-    position:absolute;
-    width:100%;
-    height:100%;
+/* Mặt trong */
+.card-back{
     background:white;
-    border-radius:15px;
     padding:25px;
     box-sizing:border-box;
-    text-align:center;
+    transform:rotateY(180deg);
     display:flex;
     justify-content:center;
     align-items:center;
+    text-align:center;
     box-shadow:0 15px 35px rgba(0,0,0,0.2);
 }
 
 /* Khi mở */
 .card.open .card-front{
-    transform:rotateY(-170deg);
+    transform:rotateY(-180deg);
 }
 
 /* ================= TIM BAY ================= */
@@ -95,15 +98,20 @@ body{
 
 @keyframes fly{
     0%{opacity:1; transform:translateY(0) scale(1);}
-    100%{opacity:0; transform:translateY(-180px) scale(1.5);}
+    100%{opacity:0; transform:translateY(-200px) scale(1.5);}
 }
-
 </style>
 </head>
 <body>
 
-<!-- YouTube Player Ẩn -->
-<div id="player" style="display:none;"></div>
+<!-- YouTube iframe ẩn -->
+<iframe id="ytplayer"
+    width="0"
+    height="0"
+    src="https://www.youtube.com/embed/ubuufa9hpsc?enablejsapi=1"
+    frameborder="0"
+    allow="autoplay"
+></iframe>
 
 <div class="card" id="card">
     <div class="card-inner">
@@ -112,7 +120,7 @@ body{
             💖 Happy 8/3 💖
         </div>
 
-        <div class="card-inside">
+        <div class="card-back">
             <div>
                 <h3>Gửi vợ yêu ❤️</h3>
                 <p>
@@ -126,26 +134,7 @@ body{
     </div>
 </div>
 
-<!-- YouTube API -->
-<script src="https://www.youtube.com/iframe_api"></script>
-
 <script>
-let player;
-
-/* ================= YOUTUBE ================= */
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-        height: '0',
-        width: '0',
-        videoId: 'ubuufa9hpsc',
-        playerVars: {
-            autoplay: 0,
-            controls: 0,
-            loop: 1,
-            playlist: 'ubuufa9hpsc'
-        }
-    });
-}
 
 /* ================= HOA RƠI ================= */
 function createFlower(){
@@ -157,21 +146,23 @@ function createFlower(){
     flower.style.fontSize = (15 + Math.random()*20) + "px";
     document.body.appendChild(flower);
 
-    setTimeout(()=>{ flower.remove(); },11000);
+    setTimeout(()=>flower.remove(),11000);
 }
 setInterval(createFlower,300);
 
 /* ================= CLICK MỞ ================= */
 const card = document.getElementById("card");
+const iframe = document.getElementById("ytplayer");
 
-card.addEventListener("click", () => {
+card.addEventListener("click", ()=>{
 
     card.classList.add("open");
 
-    // phát nhạc
-    if (player) {
-        player.playVideo();
-    }
+    // phát nhạc bằng postMessage (ổn định hơn API load)
+    iframe.contentWindow.postMessage(
+        '{"event":"command","func":"playVideo","args":""}',
+        '*'
+    );
 
     // tạo tim bay
     for(let i=0;i<15;i++){
@@ -181,8 +172,7 @@ card.addEventListener("click", () => {
         heart.style.left = (40 + Math.random()*20) + "%";
         heart.style.top = "55%";
         document.body.appendChild(heart);
-
-        setTimeout(()=>{heart.remove()},2000);
+        setTimeout(()=>heart.remove(),2000);
     }
 
 });
