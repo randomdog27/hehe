@@ -12,16 +12,16 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#ffdde1,#ee9ca7);
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
     overflow:hidden;
-    font-family:Arial;
+    font-family:Arial, sans-serif;
 }
 
 /* Hoa rơi */
 .flower{
     position:fixed;
-    font-size:22px;
-    pointer-events:none;
+    top:-30px;
+    font-size:20px;
     animation:fall linear forwards;
 }
 @keyframes fall{
@@ -31,21 +31,24 @@ body{
     }
 }
 
-/* Thiệp */
+/* Card container */
 .scene{
+    width:320px;
+    height:420px;
     perspective:1200px;
 }
 
 .card{
-    width:320px;
-    height:420px;
+    width:100%;
+    height:100%;
     position:relative;
     transform-style:preserve-3d;
     transition:transform 1s;
     cursor:pointer;
 }
 
-.face{
+/* Each page */
+.page{
     position:absolute;
     width:100%;
     height:100%;
@@ -53,72 +56,75 @@ body{
     border-radius:15px;
     overflow:hidden;
     box-shadow:0 10px 25px rgba(0,0,0,0.3);
-}
-
-.front{
     background:white;
     display:flex;
     justify-content:center;
     align-items:center;
-    font-size:28px;
-    font-weight:bold;
-    color:#e91e63;
+    text-align:center;
+    padding:20px;
 }
 
-.back{
-    transform:rotateY(180deg);
-    background:white;
-}
-
-.back img{
+.page img{
     width:100%;
     height:100%;
     object-fit:cover;
 }
 
-/* Nút nhạc */
+/* Music button */
 .music-btn{
     position:fixed;
     top:20px;
     right:20px;
-    background:#fff;
+    background:white;
     border:none;
     padding:10px 15px;
     border-radius:20px;
     cursor:pointer;
     box-shadow:0 5px 15px rgba(0,0,0,0.2);
-    z-index:10;
 }
 </style>
 </head>
-
 <body>
 
 <button class="music-btn" onclick="toggleMusic()">🔊 Nhạc</button>
 
 <div class="scene">
     <div class="card" id="card">
-        <div class="face front">
-            Happy 8/3 ❤️
+
+        <!-- Trang 1 -->
+        <div class="page" style="background:#ff4f81;color:white;font-size:26px;font-weight:bold;">
+            Happy 8/3 ❤️<br>Gửi vợ yêu
         </div>
 
-        <div class="face back">
+        <!-- Trang 2 lời chúc -->
+        <div class="page" style="transform:rotateY(180deg);">
+            Chúc em luôn xinh đẹp,<br>
+            hạnh phúc và mãi là<br>
+            điều tuyệt vời nhất ❤️
+        </div>
+
+        <!-- Ảnh 1 -->
+        <div class="page" style="transform:rotateY(360deg);">
             <img src="https://drive.google.com/uc?export=view&id=1_XXtKMewZQHzCN_NfCSofeFMvRjNHE6_">
         </div>
 
-        <div class="face back">
+        <!-- Ảnh 2 -->
+        <div class="page" style="transform:rotateY(540deg);">
             <img src="https://drive.google.com/uc?export=view&id=1_0ZbrgSCEzrLKTxshwMMUbVAbN8CZ05e">
         </div>
 
-        <div class="face back">
+        <!-- Ảnh 3 -->
+        <div class="page" style="transform:rotateY(720deg);">
             <img src="https://drive.google.com/uc?export=view&id=1YTLY5V1p9EBpOg8n1QyZgdzN2HoTOZoI">
         </div>
 
-        <div class="face back">
+        <!-- Ảnh 4 -->
+        <div class="page" style="transform:rotateY(900deg);">
             <img src="https://drive.google.com/uc?export=view&id=1jprDCY4tdCD48PwkK0KIrCnoa16P7uW4">
         </div>
 
-        <div class="face back">
+        <!-- Ảnh 5 -->
+        <div class="page" style="transform:rotateY(1080deg);">
             <img src="https://drive.google.com/uc?export=view&id=1-WtW5Th5UYL1-Lp4olT25z6xpCeArIwT">
         </div>
 
@@ -129,30 +135,28 @@ body{
 <iframe id="player"
 width="0"
 height="0"
-scrolling="no"
-frameborder="no"
 allow="autoplay"
 src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/devilkjss/i-love-you-and-i-love-you-oh">
 </iframe>
 
 <script>
-let rotateY = 0;
+let currentRotation = 0;
 const card = document.getElementById("card");
 
 card.addEventListener("click", ()=>{
-    rotateY += 180;
-    card.style.transform = "rotateY("+rotateY+"deg)";
+    currentRotation -= 180;
+    card.style.transform = "rotateY("+currentRotation+"deg)";
 });
 
 /* Hoa rơi */
 function createFlower(){
-    const flower=document.createElement("div");
-    flower.className="flower";
-    flower.innerHTML="🌸";
-    flower.style.left=Math.random()*100+"vw";
-    flower.style.animationDuration=5+Math.random()*5+"s";
-    document.body.appendChild(flower);
-    setTimeout(()=>flower.remove(),10000);
+    const f=document.createElement("div");
+    f.className="flower";
+    f.innerHTML="🌸";
+    f.style.left=Math.random()*100+"vw";
+    f.style.animationDuration=4+Math.random()*6+"s";
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),10000);
 }
 setInterval(createFlower,500);
 
